@@ -50,7 +50,7 @@ public class TokenCache {
     public static void delKey(String key) {
         // 验证成功（或者过期）后再手动删除key
         try {
-            if (!"null".equals(loadingCache.get(key))) {
+            if(!"null".equals(loadingCache.get(key))) {
                 loadingCache.invalidate(key);
             }
         } catch (ExecutionException e) {

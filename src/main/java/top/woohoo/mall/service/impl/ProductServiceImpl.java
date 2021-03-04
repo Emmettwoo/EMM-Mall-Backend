@@ -1,6 +1,5 @@
 package top.woohoo.mall.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
@@ -10,36 +9,36 @@ import org.springframework.stereotype.Service;
 import top.woohoo.mall.common.Const;
 import top.woohoo.mall.common.ResponseCode;
 import top.woohoo.mall.common.ServerResponse;
-import top.woohoo.mall.mapper.CategoryMapper;
-import top.woohoo.mall.mapper.ProductMapper;
-import top.woohoo.mall.model.pojo.Category;
-import top.woohoo.mall.model.pojo.Product;
-import top.woohoo.mall.service.CategoryService;
-import top.woohoo.mall.service.ProductService;
+import top.woohoo.mall.dao.CategoryMapper;
+import top.woohoo.mall.dao.ProductMapper;
+import top.woohoo.mall.pojo.Category;
+import top.woohoo.mall.pojo.Product;
+import top.woohoo.mall.service.ICategoryService;
+import top.woohoo.mall.service.IProductService;
 import top.woohoo.mall.util.DateTimeUtil;
 import top.woohoo.mall.util.PropertiesUtil;
-import top.woohoo.mall.model.vo.Product.ProductDetailVO;
-import top.woohoo.mall.model.vo.Product.ProductListVO;
+import top.woohoo.mall.vo.ProductDetailVO;
+import top.woohoo.mall.vo.ProductListVO;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Service
-public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> implements ProductService {
+@Service("iProductService")
+public class ProductServiceImpl implements IProductService {
 
     @Autowired
     private CategoryMapper categoryMapper;
     @Autowired
     private ProductMapper productMapper;
     @Autowired
-    private CategoryService categoryService;
+    private ICategoryService iCategoryService;
 
 
     @Override
     public ServerResponse saveProduct(Product product) {
-        if (productMapper.updateByPrimaryKeySelective(product) > 0) {
+        if(productMapper.updateByPrimaryKeySelective(product) > 0) {
             return ServerResponse.createBySuccessMessage("产品信息保存成功");
-        } else if (productMapper.insert(product) > 0) {
+        } else if(productMapper.insert(product) > 0) {
             if (product.getName() == null) {
                 return ServerResponse.createByErrorMessage("产品名称不能为空");
             }
@@ -64,7 +63,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         Product product = new Product();
         product.setId(productId);
         product.setStatus(status);
-        if (productMapper.updateByPrimaryKeySelective(product) > 0) {
+        if(productMapper.updateByPrimaryKeySelective(product) > 0) {
             return ServerResponse.createBySuccessMessage("销售状态设置成功");
         }
         return ServerResponse.createByErrorMessage("设置失败，产品不存在");
@@ -76,7 +75,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
             return ServerResponse.createByCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
 
-        if (productMapper.deleteByPrimaryKey(productId) > 0) {
+        if(productMapper.deleteByPrimaryKey(productId) > 0) {
             return ServerResponse.createBySuccessMessage("商品信息删除成功");
         }
         return ServerResponse.createByErrorMessage("删除失败，产品不存在");
@@ -84,11 +83,11 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Override
     public ServerResponse<ProductDetailVO> productDetail(Integer productId) {
-        if (productId == null) {
+        if(productId == null) {
             return ServerResponse.createByCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
         Product product = productMapper.selectByPrimaryKey(productId);
-        if (product == null) {
+        if(product == null) {
             return ServerResponse.createByErrorMessage("编辑失败，产品不存在");
         }
 
@@ -97,15 +96,15 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
 
     @Override
     public ServerResponse<ProductDetailVO> onSaleProductDetail(Integer productId) {
-        if (productId == null) {
+        if(productId == null) {
             return ServerResponse.createByCodeMessage(ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
         Product product = productMapper.selectByPrimaryKey(productId);
-        if (product == null) {
+        if(product == null) {
             return ServerResponse.createByErrorMessage("查看失败，产品不存在");
         }
-        if (product.getStatus() != Const.ProductStatusEnum.ON_SALE.getCode()) {
-            return ServerResponse.createByErrorMessage("查看失败，产品不在售");
+        if(product.getStatus() != Const.ProductStatusEnum.ON_SALE.getCode()) {
+            return  ServerResponse.createByErrorMessage("查看失败，产品不在售");
         }
 
         return ServerResponse.createBySuccess(this.assembleProductDetailVO(product));
@@ -126,10 +125,10 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         Category category = categoryMapper.selectByPrimaryKey(categoryId);
         if (categoryId == 0) {
             categoryIdList = null;
-        } else if (category == null) {
+        } else if(category == null) {
             return ServerResponse.createByErrorMessage("找不到目标分类");
         } else {
-            for (Category item : categoryService.getCategoryOffspring(categoryId).getData()) {
+            for (Category item : iCategoryService.getCategoryOffspring(categoryId).getData()) {
                 categoryIdList.add(item.getId());
             }
         }
@@ -137,7 +136,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         PageHelper.startPage(pageNum, pageSize);
         // 处理排序问题，你就继续惯着PageHelper吧。
         if (StringUtils.isNotBlank(orderBy)) {
-            if (Const.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)) {
+            if(Const.ProductListOrderBy.PRICE_ASC_DESC.contains(orderBy)) {
                 String[] orderByArray = orderBy.split("_");
                 PageHelper.orderBy(orderByArray[0] + " " + orderByArray[1]);
             }
@@ -170,7 +169,7 @@ public class ProductServiceImpl extends ServiceImpl<ProductMapper, Product> impl
         productDetailVO.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix", "http://img.woohoo.top/"));
         // 解决商品品类id是0时，品类条目不存在的bug。（虽然理论上根品类0不存放商品）
         Category category = categoryMapper.selectByPrimaryKey(product.getCategoryId());
-        productDetailVO.setParentCategoryId((category != null ? category.getParentId() : null));
+        productDetailVO.setParentCategoryId((category!=null ? category.getParentId() : null));
         productDetailVO.setCreateTime(DateTimeUtil.timestamp2FormatTime(product.getCreateTime()));
         productDetailVO.setUpdateTime(DateTimeUtil.timestamp2FormatTime(product.getUpdateTime()));
 

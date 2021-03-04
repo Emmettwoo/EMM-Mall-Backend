@@ -10,6 +10,28 @@ public class Const {
     public static final String USERNAME = "username";
 
 
+    public interface CartItem {
+        int UN_CHECKED = 0;
+        int CHECKED = 1;
+
+        String IS_OUT_OF_STOCK = "IS_OUT_OF_STOCK";
+        String NOT_OUT_OF_STOCK = "NOT_OUT_OF_STOCK";
+    }
+
+    public interface ProductListOrderBy {
+        Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_asc", "price_desc");
+    }
+
+    // 根据支付宝回调状态配置
+    public interface AlipayCallback {
+        String TRADE_STATUS_WAIT_BUYER_PAY = "WAIT_BUYER_PAY";
+        String TRADE_STATUS_TRADE_SUCCESS = "TRADE_SUCCESS";
+
+        String RESPONSE_SUCCESS = "success";
+        String RESPONSE_FAILED = "failed";
+    }
+
+
     public enum UserRoleEnum {
         ROLE_CUSTOMER(0, "普通用户"),
         ROLE_ADMIN(1, "管理员");
@@ -23,6 +45,13 @@ public class Const {
             this.value = value;
         }
 
+        public int getCode() {
+            return code;
+        }
+        public String getValue() {
+            return value;
+        }
+
         public static UserRoleEnum codeOf(int code) {
             for (UserRoleEnum userRoleEnum : values()) {
                 if (userRoleEnum.getCode() == code) {
@@ -30,14 +59,6 @@ public class Const {
                 }
             }
             throw new RuntimeException("没有对应的用户类型枚举");
-        }
-
-        public int getCode() {
-            return code;
-        }
-
-        public String getValue() {
-            return value;
         }
     }
 
@@ -57,7 +78,6 @@ public class Const {
         public int getCode() {
             return code;
         }
-
         public String getValue() {
             return value;
         }
@@ -79,14 +99,12 @@ public class Const {
         public int getCode() {
             return code;
         }
-
         public String getValue() {
             return value;
         }
     }
 
-
-    public enum OrderStatusEnum {
+    public enum OrderStatusEnum{
         CANCELED(0, "已取消"),
         NO_PAY(10, "未支付"),
         PAID(20, "已付款"),
@@ -102,6 +120,13 @@ public class Const {
             this.value = value;
         }
 
+        public int getCode() {
+            return code;
+        }
+        public String getValue() {
+            return value;
+        }
+
         public static OrderStatusEnum codeOf(int code) {
             for (OrderStatusEnum orderStatusEnum : values()) {
                 if (orderStatusEnum.getCode() == code) {
@@ -109,14 +134,6 @@ public class Const {
                 }
             }
             throw new RuntimeException("没有对应的订单状态枚举");
-        }
-
-        public int getCode() {
-            return code;
-        }
-
-        public String getValue() {
-            return value;
         }
     }
 
@@ -131,6 +148,13 @@ public class Const {
             this.value = value;
         }
 
+        public int getCode() {
+            return code;
+        }
+        public String getValue() {
+            return value;
+        }
+
         public static PaymentTypeEnum codeOf(int code) {
             for (PaymentTypeEnum paymentTypeEnum : values()) {
                 if (paymentTypeEnum.getCode() == code) {
@@ -138,14 +162,6 @@ public class Const {
                 }
             }
             throw new RuntimeException("没有对应的支付类型枚举");
-        }
-
-        public int getCode() {
-            return code;
-        }
-
-        public String getValue() {
-            return value;
         }
     }
 
@@ -163,30 +179,8 @@ public class Const {
         public int getCode() {
             return code;
         }
-
         public String getValue() {
             return value;
         }
-    }
-
-    public interface CartItem {
-        int UN_CHECKED = 0;
-        int CHECKED = 1;
-
-        String IS_OUT_OF_STOCK = "IS_OUT_OF_STOCK";
-        String NOT_OUT_OF_STOCK = "NOT_OUT_OF_STOCK";
-    }
-
-    public interface ProductListOrderBy {
-        Set<String> PRICE_ASC_DESC = Sets.newHashSet("price_asc", "price_desc");
-    }
-
-    // 根据支付宝回调状态配置
-    public interface AlipayCallback {
-        String TRADE_STATUS_WAIT_BUYER_PAY = "WAIT_BUYER_PAY";
-        String TRADE_STATUS_TRADE_SUCCESS = "TRADE_SUCCESS";
-
-        String RESPONSE_SUCCESS = "success";
-        String RESPONSE_FAILED = "failed";
     }
 }

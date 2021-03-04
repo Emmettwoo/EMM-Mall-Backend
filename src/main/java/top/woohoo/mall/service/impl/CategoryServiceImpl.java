@@ -1,23 +1,24 @@
 package top.woohoo.mall.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.woohoo.mall.common.ServerResponse;
-import top.woohoo.mall.mapper.CategoryMapper;
-import top.woohoo.mall.model.pojo.Category;
-import top.woohoo.mall.service.CategoryService;
+import top.woohoo.mall.dao.CategoryMapper;
+import top.woohoo.mall.pojo.Category;
+import top.woohoo.mall.service.ICategoryService;
 
 import java.util.List;
 import java.util.Set;
 
-@Service
+@Service("iCategoryService")
 @Slf4j
-public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> implements CategoryService {
+public class CategoryServiceImpl implements ICategoryService {
 
     @Autowired
     private CategoryMapper categoryMapper;
@@ -25,7 +26,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     @Override
     public ServerResponse addCategory(String categoryName, Integer parentId) {
         // 第一个条件永远为假吧，因为parentId存在默认值0
-        if (parentId == null || StringUtils.isBlank(categoryName)) {
+        if(parentId==null || StringUtils.isBlank(categoryName)) {
             return ServerResponse.createByErrorMessage("添加参数错误");
         }
         Category category = new Category();
@@ -33,7 +34,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         category.setParentId(parentId);
         category.setStatus(true);
 
-        if (categoryMapper.insert(category) > 0) {
+        if(categoryMapper.insert(category) > 0) {
             return ServerResponse.createBySuccessMessage("添加分类成功");
         }
         return ServerResponse.createByErrorMessage("添加分类失败");
@@ -43,7 +44,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
     public ServerResponse updateCategory(Integer categoryId, Integer parentId, String categoryName,
                                          Boolean status) {
         Category category = categoryMapper.selectByPrimaryKey(categoryId);
-        if (category == null) {
+        if(category == null) {
             return ServerResponse.createByErrorMessage("修改目标分类不存在");
         }
 
@@ -61,7 +62,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         if (!this.getCategoryChildren(categoryId).getData().isEmpty()) {
             return ServerResponse.createByErrorMessage("该分类下存在子分类，不能删除");
         } else {
-            if (categoryMapper.deleteByPrimaryKey(categoryId) > 0) {
+            if(categoryMapper.deleteByPrimaryKey(categoryId) > 0) {
                 return ServerResponse.createBySuccessMessage("分类删除成功");
             } else {
                 return ServerResponse.createByErrorMessage("目标分类不存在");
@@ -89,7 +90,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryMapper, Category> i
         Set<Category> categorySet = Sets.newHashSet();
         // 不用接收参数？Set是引用传递？
         this.categoryOffspring(parentId, categorySet);
-        if (categorySet.isEmpty()) {
+        if(categorySet.isEmpty()) {
             log.info("未找到当前分类的子孙分类");
         }
 

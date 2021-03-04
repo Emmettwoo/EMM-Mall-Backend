@@ -1,28 +1,28 @@
 package top.woohoo.mall.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.google.common.base.Splitter;
 import com.google.common.collect.Lists;
+import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.woohoo.mall.common.Const;
 import top.woohoo.mall.common.ResponseCode;
 import top.woohoo.mall.common.ServerResponse;
-import top.woohoo.mall.mapper.CartMapper;
-import top.woohoo.mall.mapper.ProductMapper;
-import top.woohoo.mall.model.pojo.Cart;
-import top.woohoo.mall.model.pojo.Product;
-import top.woohoo.mall.model.vo.Cart.CartProductVO;
-import top.woohoo.mall.model.vo.Cart.CartVO;
-import top.woohoo.mall.service.CartService;
+import top.woohoo.mall.dao.CartMapper;
+import top.woohoo.mall.dao.ProductMapper;
+import top.woohoo.mall.pojo.Cart;
+import top.woohoo.mall.pojo.Product;
+import top.woohoo.mall.service.ICartService;
 import top.woohoo.mall.util.BigDecimalUtil;
 import top.woohoo.mall.util.PropertiesUtil;
+import top.woohoo.mall.vo.CartProductVO;
+import top.woohoo.mall.vo.CartVO;
 
 import java.math.BigDecimal;
 import java.util.List;
 
-@Service
-public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements CartService {
+@Service("iCartService")
+public class CartServiceImpl implements ICartService {
 
     @Autowired
     private CartMapper cartMapper;
@@ -32,15 +32,15 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
 
     @Override
     public ServerResponse<CartVO> add(Integer userId, Integer productId, Integer amount) {
-        if (productId == null || amount == null) {
+        if (productId==null || amount==null) {
             return ServerResponse.createByCodeMessage(
                     ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
         if (amount <= 0) {
             return ServerResponse.createByErrorMessage("添加数量必须大于零");
         }
-        Product product = productMapper.selectById(productId);
-        if (product == null || product.getStatus() == Const.ProductStatusEnum.NOT_SALE.getCode()) {
+        Product product = productMapper.selectByPrimaryKey(productId);
+        if (product==null || product.getStatus() == Const.ProductStatusEnum.NOT_SALE.getCode()) {
             return ServerResponse.createByErrorMessage("商品不存在或不是在售状态");
         }
 
@@ -54,7 +54,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
             cartMapper.insert(newCart);
         } else {
             cart.setQuantity(cart.getQuantity() + amount);
-            cartMapper.updateById(cart);
+            cartMapper.updateByPrimaryKeySelective(cart);
         }
         return this.list(userId);
     }
@@ -72,7 +72,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
 
     @Override
     public ServerResponse<CartVO> update(Integer userId, Integer productId, Integer amount) {
-        if (productId == null || amount == null) {
+        if (productId==null || amount ==null) {
             return ServerResponse.createByCodeMessage(
                     ResponseCode.ILLEGAL_ARGUMENT.getCode(), ResponseCode.ILLEGAL_ARGUMENT.getDesc());
         }
@@ -82,7 +82,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
         }
 
         Product product = productMapper.selectByPrimaryKey(productId);
-        if (product == null || product.getStatus() == Const.ProductStatusEnum.NOT_SALE.getCode()) {
+        if (product==null || product.getStatus() == Const.ProductStatusEnum.NOT_SALE.getCode()) {
             return ServerResponse.createByErrorMessage("商品不存在或不是在售状态");
         }
 
@@ -130,7 +130,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
 
         List<Cart> cartList = cartMapper.selectCartByUserId(userId);
         // 此时每个cart只有一个product，且不重复（参考this.add()方法）。
-        if (cartList.size() != 0) {
+        if(CollectionUtils.isNotEmpty(cartList)) {
             for (Cart cart : cartList) {
                 CartProductVO cartProductVO = new CartProductVO();
                 cartProductVO.setId(cart.getId());
@@ -183,7 +183,7 @@ public class CartServiceImpl extends ServiceImpl<CartMapper, Cart> implements Ca
             }
             cartVO.setCartProductVOList(cartProductVOList);
             cartVO.setCartTotalPrice(cartTotalPrice);
-            cartVO.setAllChecked(cartMapper.selectCartProductCheckedStatusByUserId(userId) == 0);
+            cartVO.setAllChecked(cartMapper.selectCartProductCheckedStatusByUserId(userId)==0);
             cartVO.setImageHost(PropertiesUtil.getProperty("ftp.server.http.prefix"));
         }
 

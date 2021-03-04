@@ -14,12 +14,10 @@
 
 ## Version.版本
 
-- [x] V2.0.0 首个 SpringBoot 重构版本
-- [ ] V2.1.0 Mybatis-plus 数据操作支持
-- [ ] V2.2.0 Restful 设计风格支持
-- [ ] V2.3.0 Swagger 接口文档支持
-- [ ] V2.4.0 Redis 内存缓存支持
-- [ ] More... JWT 登录校验支持
+- [x] V1.0.0 首个可用版本
+- [x] V1.1.0 管理统计数据
+- [x] V1.2.0 Lombok重构
+- [ ] V2.0.0 分布式架构
 
 ---
 

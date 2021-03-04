@@ -7,7 +7,6 @@
 
 # maven files
 target/
-.mvn/
 
 # eclipse/vsc files
 .settings/

@@ -10,38 +10,37 @@ import com.alipay.demo.trade.model.result.AlipayF2FPrecreateResult;
 import com.alipay.demo.trade.service.AlipayTradeService;
 import com.alipay.demo.trade.service.impl.AlipayTradeServiceImpl;
 import com.alipay.demo.trade.utils.ZxingUtils;
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Maps;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.CollectionUtils;
-import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.woohoo.mall.common.Const;
 import top.woohoo.mall.common.ServerResponse;
-import top.woohoo.mall.mapper.*;
-import top.woohoo.mall.model.pojo.*;
-import top.woohoo.mall.service.OrderService;
+import top.woohoo.mall.dao.*;
+import top.woohoo.mall.pojo.*;
+import top.woohoo.mall.service.IOrderService;
 import top.woohoo.mall.util.BigDecimalUtil;
 import top.woohoo.mall.util.DateTimeUtil;
 import top.woohoo.mall.util.FTPUtil;
 import top.woohoo.mall.util.PropertiesUtil;
-import top.woohoo.mall.model.vo.OrderItem.OrderItemVO;
-import top.woohoo.mall.model.vo.Order.OrderProductVO;
-import top.woohoo.mall.model.vo.Order.OrderVO;
-import top.woohoo.mall.model.vo.Shipping.ShippingVO;
+import top.woohoo.mall.vo.OrderItemVO;
+import top.woohoo.mall.vo.OrderProductVO;
+import top.woohoo.mall.vo.OrderVO;
+import top.woohoo.mall.vo.ShippingVO;
 
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.*;
 
-@Service
+@Service("iOrderService")
 @Slf4j
-public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements OrderService {
+public class OrderServiceImpl implements IOrderService {
 
     @Autowired
     private CartMapper cartMapper;
@@ -161,7 +160,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
         PageInfo pageInfo = new PageInfo<>(orderList);
         pageInfo.setList(orderVOList);
-        return ServerResponse.createBySuccess((PageInfo<OrderVO>) pageInfo);
+        return ServerResponse.createBySuccess((PageInfo<OrderVO>)pageInfo);
     }
 
     @Override
@@ -377,6 +376,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
     }
 
 
+
     // 以下为订单模块的付款部分（暂时只对接了支付宝）
     @Override
     public ServerResponse<Map<String, String>> pay(Integer userId, Long orderNo, String path) {
@@ -398,8 +398,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
 
         // (必填) 订单总金额，单位为元，不能超过1亿元
         // 如果同时传入了【打折金额】,【不可打折金额】,【订单总金额】三者,则必须满足如下条件:【订单总金额】=【打折金额】+【不可打折金额】
-        String totalAmount = order.getPayment().toString();
-        ;
+        String totalAmount = order.getPayment().toString();;
 
         // (可选) 订单不可打折金额，可以配合商家平台配置折扣活动，如果酒水不参与打折，则将对应金额填写至此字段
         // 如果该值未传入,但传入了【订单总金额】,【打折金额】,则该值默认为【订单总金额】-【打折金额】
@@ -508,7 +507,7 @@ public class OrderServiceImpl extends ServiceImpl<OrderMapper, Order> implements
             return ServerResponse.createByErrorMessage("用户没有该订单");
         }
         if (order.getStatus() >= Const.OrderStatusEnum.PAID.getCode()) {
-            return ServerResponse.createBySuccess();
+            return  ServerResponse.createBySuccess();
         }
         return ServerResponse.createByError();
     }

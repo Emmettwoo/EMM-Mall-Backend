@@ -2,19 +2,21 @@ package top.woohoo.mall.service.impl;
 
 import com.google.common.collect.Lists;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import top.woohoo.mall.common.ServerResponse;
-import top.woohoo.mall.service.FileService;
+import top.woohoo.mall.service.IFileService;
 import top.woohoo.mall.util.FTPUtil;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.UUID;
 
-@Service
+@Service("iFileService")
 @Slf4j
-public class FileServiceImpl implements FileService {
+public class FileServiceImpl implements IFileService {
 
     @Override
     public ServerResponse<String> upload(MultipartFile multipartFile, String path) {
@@ -25,7 +27,7 @@ public class FileServiceImpl implements FileService {
 
         log.info("Start upload {} to {} and rename to {}", originalFileName, path, uploadFileName);
         File fileDir = new File(path);
-        if (!fileDir.exists()) {
+        if(!fileDir.exists()) {
             fileDir.setWritable(true);
             fileDir.mkdirs();
         }

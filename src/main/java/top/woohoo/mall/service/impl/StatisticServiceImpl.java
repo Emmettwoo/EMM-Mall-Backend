@@ -4,15 +4,15 @@ import com.google.common.collect.Maps;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.woohoo.mall.common.ServerResponse;
-import top.woohoo.mall.mapper.OrderMapper;
-import top.woohoo.mall.mapper.ProductMapper;
-import top.woohoo.mall.mapper.UserMapper;
-import top.woohoo.mall.service.StatisticService;
+import top.woohoo.mall.dao.OrderMapper;
+import top.woohoo.mall.dao.ProductMapper;
+import top.woohoo.mall.dao.UserMapper;
+import top.woohoo.mall.service.IStatisticService;
 
 import java.util.Map;
 
-@Service
-public class StatisticServiceImpl implements StatisticService {
+@Service("iStatisticService")
+public class StatisticServiceImpl implements IStatisticService {
 
     @Autowired
     private UserMapper userMapper;

@@ -1,21 +1,20 @@
 package top.woohoo.mall.service.impl;
 
-import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import top.woohoo.mall.common.Const;
 import top.woohoo.mall.common.ServerResponse;
-import top.woohoo.mall.mapper.OrderMapper;
-import top.woohoo.mall.mapper.ShippingMapper;
-import top.woohoo.mall.model.pojo.Shipping;
-import top.woohoo.mall.service.ShippingService;
+import top.woohoo.mall.dao.OrderMapper;
+import top.woohoo.mall.dao.ShippingMapper;
+import top.woohoo.mall.pojo.Shipping;
+import top.woohoo.mall.service.IShippingService;
 
 import java.util.List;
 
-@Service
-public class ShippingServiceImpl extends ServiceImpl<ShippingMapper, Shipping> implements ShippingService {
+@Service("iShippingService")
+public class ShippingServiceImpl implements IShippingService {
 
     @Autowired
     ShippingMapper shippingMapper;
