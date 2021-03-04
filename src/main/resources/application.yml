@@ -1,0 +1,12 @@
+# DataSource Config
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/emm_mall
+    username: emmettwoo
+    password: emmettwoo
+
+# Logger Config
+logging:
+  level:
+    top.woohoo.mall: debug
