@@ -5,5 +5,5 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/v2/portal/user")
-public class MallUserPortalController extends MallPortalController {
+public class MallUserPortalController {
 }
