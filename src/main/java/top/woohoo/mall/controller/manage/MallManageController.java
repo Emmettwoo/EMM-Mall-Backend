@@ -15,11 +15,11 @@ public class MallManageController {
     public String help(@RequestParam(value = "name", defaultValue = "my friend") String name) {
         log.info(name + " visited help page.\n");
         StringBuffer welcomeSB = new StringBuffer();
-        welcomeSB.append(String.format("Welcome to EMM-Mall, %s!\n", name));
-        welcomeSB.append("This application is the new version of EMM-Mall-Backend\n");
-        welcomeSB.append("which is base on SpringBoot and lots of java frameworks\n");
-        welcomeSB.append("for practice purpose, hope you enjoy your time.\n");
-        welcomeSB.append("By Emmett Woo @ 2021/03/17");
+        welcomeSB.append(String.format("Welcome to EMM-Mall, %s! <br /> <br />", name));
+        welcomeSB.append("This application is the new version of EMM-Mall-Backend <br />");
+        welcomeSB.append("which is base on SpringBoot and a lot of java frameworks <br />");
+        welcomeSB.append("for self-practice purpose, hope you enjoy your time on it. <br />");
+        welcomeSB.append("<br /> By Emmett Woo @ 2021/03/17 <br />");
         return welcomeSB.toString();
     }
 }
