@@ -88,12 +88,13 @@
             <version>3.4.2</version>
         </dependency>
 
-        <!-- Shiro -->
+        <!-- Shiro
         <dependency>
             <groupId>org.apache.shiro</groupId>
             <artifactId>shiro-spring-boot-starter</artifactId>
             <version>1.7.1</version>
         </dependency>
+        -->
 
         <!-- FTPClient -->
         <dependency>
