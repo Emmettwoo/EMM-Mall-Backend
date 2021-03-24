@@ -1,0 +1,15 @@
+language: java
+jdk:
+    - openjdk8
+
+sudo: false
+install: true
+script: 
+    - "mvn clean package -Dmaven.test.skip=true"
+    - "mvn cobertura:cobertura"
+
+env:
+    - CODECOV_TOKEN='c60ac204-037e-4df9-bb15-32c1b8403c8c'
+
+after_success:
+    - bash <(curl -s https://codecov.io/bash)
