@@ -32,9 +32,9 @@ public class MallUserServiceImpl extends ServiceImpl<MallUserMapper, MallUser> i
 
         // 若传入账户类型名，检查是否存在并进行数据库匹配
         if (dto.getRole() != null) {
-            MallUserRoleEnum userRole = MallUserRoleEnum.getByDesc(dto.getRole());
+            MallUserRoleEnum userRole = MallUserRoleEnum.getByCode(dto.getRole());
             if (userRole == null) {
-                throw new ResponseException(-1, "错误的用户类型名");
+                throw new ResponseException(-1, "未找到指定的用户类型");
             } else {
                 wrapper.eq(MallUser::getRole, userRole.getCode());
             }

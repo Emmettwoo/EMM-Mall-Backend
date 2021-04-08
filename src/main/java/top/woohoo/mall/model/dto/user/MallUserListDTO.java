@@ -1,5 +1,9 @@
 package top.woohoo.mall.model.dto.user;
 
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -24,6 +28,8 @@ public class MallUserListDTO {
     @ApiModelProperty(value = "用户名")
     private String username;
 
+    @Min(value = 0, message = "用户角色类型值错误")
+    @Max(value = 1, message = "用户角色类型值错误")
     @ApiModelProperty(value = "用户角色类型")
-    private String role;
+    private Integer role;
 }

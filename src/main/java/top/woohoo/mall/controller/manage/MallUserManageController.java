@@ -14,6 +14,7 @@ import top.woohoo.mall.model.dto.user.MallUserListDTO;
 import top.woohoo.mall.model.po.MallUser;
 import top.woohoo.mall.service.MallUserService;
 
+import javax.validation.Valid;
 import java.util.List;
 
 /**
@@ -31,10 +32,10 @@ public class MallUserManageController extends MallBasicController {
 
     @GetMapping("/list")
     @ApiOperation(value = "【后台】用户模块-用户列表", response = MallUser.class, responseContainer = "List")
-    public ResponseData<List<MallUser>> listExaminationInPage(@RequestBody MallUserListDTO dto, BindingResult bindingResult) {
+    public ResponseData<List<MallUser>> listExaminationInPage(@RequestBody @Valid MallUserListDTO dto, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
-            this.commonResponse(bindingResult);
+            return this.commonResponse(bindingResult);
         }
 
         return this.commonResponse(userService.listUser(dto));

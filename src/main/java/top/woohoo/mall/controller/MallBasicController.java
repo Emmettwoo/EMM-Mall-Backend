@@ -31,9 +31,9 @@ public class MallBasicController {
         StringBuilder errorMsg = new StringBuilder();
 
         for (FieldError fieldError : result.getFieldErrors()) {
-            errorMsg.append(",").append(fieldError.getDefaultMessage());
+            errorMsg.append(fieldError.getDefaultMessage()).append(", ");
         }
 
-        return this.commonResponse(-1, errorMsg.toString());
+        return this.commonResponse(-1, errorMsg.substring(0, errorMsg.length() - 2));
     }
 }
