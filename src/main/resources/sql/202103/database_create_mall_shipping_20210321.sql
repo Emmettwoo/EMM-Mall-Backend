@@ -27,5 +27,5 @@ CREATE TABLE `mall_shipping`
     KEY `index_user_id` (`user_id`) USING BTREE
 ) ENGINE = InnoDB
   CHARACTER SET = utf8
-  COLLATE = utf8_general_ci COMMENT = '商城邮寄表'
+  COLLATE = utf8_general_ci COMMENT = '商城收货地址表'
   ROW_FORMAT = Dynamic;

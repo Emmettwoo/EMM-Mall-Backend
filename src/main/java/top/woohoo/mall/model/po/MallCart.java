@@ -17,6 +17,7 @@ import java.util.Date;
  * @since 2021/03/20
  */
 @Data
+@EqualsAndHashCode(of = "id")
 @ApiModel(value = "MallCart对象", description = "商城购物车表")
 public class MallCart implements Serializable {
 
@@ -24,13 +25,13 @@ public class MallCart implements Serializable {
 
     @ApiModelProperty(value = "购物车编号")
     @TableId(value = "id", type = IdType.ASSIGN_ID)
-    private Integer id;
+    private Long id;
 
     @ApiModelProperty(value = "用户编号")
-    private Integer userId;
+    private Long userId;
 
     @ApiModelProperty(value = "商品编号")
-    private Integer productId;
+    private Long productId;
 
     @ApiModelProperty(value = "商品数量")
     private Integer quantity;
