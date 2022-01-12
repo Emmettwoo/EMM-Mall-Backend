@@ -7,6 +7,9 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
+/**
+ * @author Emmett
+ */
 @SpringBootApplication
 @EnableTransactionManagement
 @MapperScan("top.woohoo.mall.mapper")
