@@ -1,10 +1,10 @@
-# DataSource Config
 spring:
+# DataSource Config
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://emm-dbserver-jp1.mysql.database.azure.com:3306/emm_mall
     username: emmettwoo
-    password: g&2MQaLxL@d3Um%^
+    password: ENC(5HUvi9cPkF942GmO7RbyJu3rTcfZs0LJnTsxsVfZWFn8G8eRiLSeWbUNcZm2pOn/zhCm0PDF06il2E/pFi7/pQ==)
 
 # Logger Config
 logging:
