@@ -5,7 +5,6 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import top.woohoo.mall.common.ResponseData;
@@ -32,7 +31,7 @@ public class MallUserManageController extends MallBasicController {
 
     @GetMapping("/list")
     @ApiOperation(value = "【后台】用户模块-用户列表", response = MallUser.class, responseContainer = "List")
-    public ResponseData<List<MallUser>> listExaminationInPage(@RequestBody @Valid MallUserListDTO dto, BindingResult bindingResult) {
+    public ResponseData<List<MallUser>> listExaminationInPage(@Valid MallUserListDTO dto, BindingResult bindingResult) {
 
         if (bindingResult.hasErrors()) {
             return this.commonResponse(bindingResult);
