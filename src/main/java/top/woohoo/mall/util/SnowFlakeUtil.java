@@ -1,5 +1,7 @@
 package top.woohoo.mall.util;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * UUID生成器
  * 参考自 SnowFlake: https://www.jianshu.com/p/54a87a7c3622
@@ -8,6 +10,7 @@ package top.woohoo.mall.util;
  * @author wuzhihong
  * @since 2021/03/17
  */
+@Slf4j
 public class SnowFlakeUtil {
 
     // 工作机器标识位数
@@ -54,7 +57,7 @@ public class SnowFlakeUtil {
             try {
                 throw new Exception("发生了时间回溯？接下来 " + (LAST_TIME_STAMP - timestamp) + " 毫秒内不再接受生成请求！");
             } catch (Exception e) {
-                e.printStackTrace();
+                log.error(e.getMessage());
             }
         }
 
