@@ -8,45 +8,45 @@ import top.woohoo.mall.common.ProgramException;
  * 参考自 SnowFlake: https://www.jianshu.com/p/54a87a7c3622
  * 1bit 占位符 + 63bit有效位数 ( 41bit 时间戳, 10bit 工作机器, 12bit 序列号)
  *
- * @author wuzhihong
+ * @author Emmett Woo
  * @since 2021/03/17
  */
 @Slf4j
 public class SnowFlakeUtil {
 
-    // 工作机器标识位数
+    /** 工作机器标识位数 */
     private static final long WORKER_ID_BITS = 10L;
-    // 毫秒内自增位数（序列）
+    /** 毫秒内自增位数（序列） */
     private static final long SEQUENCE_BITS = 12L;
-    // 工作机器ID偏左移12位
+    /** 工作机器ID偏左移12位 */
     private static final long WORKER_ID_SHIFT = SEQUENCE_BITS;
-    // 时间毫秒左移22位
+    /** 时间毫秒左移22位 */
     private static final long TIMESTAMP_LEFT_SHIFT = SEQUENCE_BITS + WORKER_ID_BITS;
-    // 序列掩码，验证序列是否超出上限
+    /** 序列掩码，验证序列是否超出上限 */
     private static final long SEQUENCE_MASK = ~(-1L << SEQUENCE_BITS);
 
-    // 起始时间戳 （北京时间: 2021-01-01 00:00:00）
+    /** 起始时间戳 （北京时间: 2021-01-01 00:00:00） */
     private static final long START_TIME_STAMP = 1609430400000L;
-    // 上次时间戳
+    /** 上次时间戳 */
     private static long lastTimeStamp = -1L;
-    // 工作机器ID
+    /** 工作机器ID */
     private final long workerId;
-    // 当前毫秒内序列
+    /** 当前毫秒内序列 */
     private long sequence = 0L;
 
 
-    // 单例模式
-    private static final SnowFlakeUtil instance;
+    /** 单例模式 */
+    private static final SnowFlakeUtil INSTANCE;
     static {
-        instance = new SnowFlakeUtil(RandomUtil.nextLong(0L, 1023L));
+        INSTANCE = new SnowFlakeUtil(RandomUtil.nextLong(0L, 1023L));
     }
     private SnowFlakeUtil(Long workerId) {
         this.workerId = workerId;
     }
 
-    // 获取下一个UUID
+    /** 获取下一个UUID */
     public static synchronized long getNextId() {
-        return instance.generateNextId();
+        return INSTANCE.generateNextId();
     }
     public synchronized long generateNextId() {
         // 获取当前时间戳
@@ -79,11 +79,11 @@ public class SnowFlakeUtil {
         return ((timestamp - START_TIME_STAMP) << TIMESTAMP_LEFT_SHIFT) | (workerId << WORKER_ID_SHIFT) | sequence;
     }
 
-    // 获取当前时间戳
+    /** 获取当前时间戳 */
     private long getCurrentMillis() {
         return System.currentTimeMillis();
     }
-    // 等待新的时间戳
+    /** 等待新的时间戳 */
     private long waitNextMillis(final long lastTimestamp) {
         long timestamp = this.getCurrentMillis();
         while (timestamp <= lastTimestamp) {
