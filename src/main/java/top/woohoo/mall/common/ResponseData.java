@@ -9,6 +9,7 @@ import java.io.Serializable;
 
 /**
  * 后端服务通用数据返回
+ *
  * @author Emmett Woo
  * @since 2021/03/20
  */
@@ -16,7 +17,9 @@ import java.io.Serializable;
 @JsonSerialize
 @NoArgsConstructor
 @AllArgsConstructor
-public class ResponseData<T> implements Serializable {
+public class ResponseData<T extends Serializable> implements Serializable {
+
+    private static final long serialVersionUID = -8925451418069396730L;
 
     private Integer code;
     private T data;

@@ -4,21 +4,21 @@ import lombok.Data;
 import lombok.EqualsAndHashCode;
 
 /**
- * 后端服务通用运行时异常
+ * 后端服务通用程式异常
  *
  * @author Emmett Woo
- * @since 2021/03/20
+ * @since 2022/01/16
  */
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class ResponseException extends RuntimeException {
+public class ProgramException extends Exception {
 
-    private static final long serialVersionUID = 5705289650305431529L;
+    private static final long serialVersionUID = -2854177742521037798L;
 
     private final Integer code;
     private final String desc;
 
-    public ResponseException(Integer code, String desc) {
+    public ProgramException(Integer code, String desc) {
         super(desc);
         this.code = code;
         this.desc = desc;

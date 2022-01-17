@@ -8,13 +8,15 @@ import java.util.List;
 
 /**
  * 商城用户表 服务接口类
- * @author wuzhihong
+ *
+ * @author Emmett Woo
  * @since 2021-03-20
  */
 public interface MallUserService extends IService<MallUser> {
 
     /**
      * 获取用户列表
+     *
      * @param dto 筛选条件
      * @return 用户列表
      */

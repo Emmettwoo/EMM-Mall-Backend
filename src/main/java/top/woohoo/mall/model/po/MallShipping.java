@@ -1,27 +1,26 @@
 package top.woohoo.mall.model.po;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 商城收货地址表
- * @author wuzhihong
+ *
+ * @author Emmett Woo
  * @since 2021/04/28
  */
 @Data
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id", callSuper = false)
 @ApiModel(value = "MallShipping对象", description = "商城收货地址表")
-public class MallShipping implements Serializable {
+public class MallShipping extends MallBasicPO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = -8639800289794591698L;
 
     @ApiModelProperty(value = "收货地址编号")
     @TableId(value = "id", type = IdType.ASSIGN_ID)
@@ -53,21 +52,4 @@ public class MallShipping implements Serializable {
 
     @ApiModelProperty(value = "启用状态")
     private Integer status;
-
-    @ApiModelProperty(value = "创建用户")
-    private String createBy;
-
-    @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    @ApiModelProperty(value = "更新用户")
-    private String updateBy;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;
-
-    @ApiModelProperty(value = "备注")
-    private String remark;
 }

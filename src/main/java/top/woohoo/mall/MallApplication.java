@@ -8,7 +8,7 @@ import org.springframework.boot.web.servlet.support.SpringBootServletInitializer
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 /**
- * @author Emmett
+ * @author Emmett Woo
  */
 @SpringBootApplication
 @EnableTransactionManagement

@@ -12,6 +12,7 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * Swagger API文档启用
+ *
  * @author Emmett Woo
  * @since 2021/03/17
  */
@@ -21,19 +22,11 @@ public class Swagger2 {
 
     @Bean
     public Docket createRestApi() {
-        return new Docket(DocumentationType.SWAGGER_2)
-                .apiInfo(this.apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("top.woohoo.mall"))
-                .paths(PathSelectors.any())
-                .build();
+        return new Docket(DocumentationType.SWAGGER_2).apiInfo(this.apiInfo()).select().apis(RequestHandlerSelectors.basePackage("top.woohoo.mall")).paths(PathSelectors.any()).build();
     }
 
     private ApiInfo apiInfo() {
-        return new ApiInfoBuilder()
-                .title("EMM-Mall-Backend API")
-                .version("2.0")
-                .description("Welcome to EMM-Mall-Backend Swagger2 RESTFul API")
-                .build();
+        return new ApiInfoBuilder().title("EMM-Mall-Backend API").version("2.0").description("Welcome to " +
+                "EMM-Mall-Backend Swagger2 RESTFul API").build();
     }
 }

@@ -1,28 +1,27 @@
 package top.woohoo.mall.model.po;
 
-import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
-import lombok.*;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
-import java.util.Date;
 
 /**
  * 商城订单商品表
- * @author wuzhihong
+ *
+ * @author Emmett Woo
  * @since 2021/04/28
  */
 @Data
-@EqualsAndHashCode(of = "id")
+@EqualsAndHashCode(of = "id", callSuper = false)
 @ApiModel(value = "MallOrderItem对象", description = "商城订单商品表")
-public class MallOrderItem implements Serializable {
+public class MallOrderItem extends MallBasicPO implements Serializable {
 
-    private static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 6884508853995770556L;
 
     @ApiModelProperty(value = "订单商品编号（独立）")
     @TableId(value = "id", type = IdType.ASSIGN_ID)
@@ -51,21 +50,4 @@ public class MallOrderItem implements Serializable {
 
     @ApiModelProperty(value = "商品总价")
     private BigDecimal totalPrice;
-
-    @ApiModelProperty(value = "创建用户")
-    private String createBy;
-
-    @ApiModelProperty(value = "创建时间")
-    @TableField(fill = FieldFill.INSERT)
-    private Date createTime;
-
-    @ApiModelProperty(value = "更新用户")
-    private String updateBy;
-
-    @ApiModelProperty(value = "更新时间")
-    @TableField(fill = FieldFill.INSERT_UPDATE)
-    private Date updateTime;
-
-    @ApiModelProperty(value = "备注")
-    private String remark;
 }
